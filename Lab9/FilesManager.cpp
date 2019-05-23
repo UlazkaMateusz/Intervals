@@ -15,7 +15,10 @@ void FilesManager::FreeRam()
 		ram[i]->IncremetAge();
 
 		if (ram[i]->getAge() >= 15)
+		{
+			delete ram[i];
 			ram.erase(ram.begin() + i);
+		}
 	}
 }
 
@@ -68,7 +71,7 @@ void FilesManager::LoadInterval(Interval *i)
 		if (j + 1 < ram_load.size())
 			if (!ram_load[j]->getEnd()->Exact(ram_load[j + 1]->getStart()))
 			{
-				Interval* tmp = new Interval(new DateTime(ram_load[j]->getEnd()), new DateTime(ram_load[j + 1]->getStart()));
+				Interval* tmp = new Interval(ram_load[j]->getEnd(), ram_load[j + 1]->getStart());
 				std::cout << "Reading from Disk: " << *(tmp) << std::endl;
 				AddInterval(tmp);
 			}
@@ -78,14 +81,14 @@ void FilesManager::LoadInterval(Interval *i)
 	{
 		if (i->StartsBefore(ram_load[0]))
 		{
-			Interval* tmp = new Interval(new DateTime(i->getStart()), new DateTime(ram[0]->getStart()));
+			Interval* tmp = new Interval(i->getStart(), ram[0]->getStart());
 			std::cout << "Reading from Disk: " << *(tmp) << std::endl;
 			AddInterval(tmp);
 		}
 
 		if (i->EndsAfter(ram_load[ram_load.size() - 1]))
 		{
-			Interval* tmp = new Interval(new DateTime(ram_load[ram_load.size() - 1]->getEnd()), new DateTime(i->getEnd()));
+			Interval* tmp = new Interval(ram_load[ram_load.size() - 1]->getEnd(), i->getEnd());
 			std::cout << "Reading from Disk: " << *(tmp) << std::endl;
 			AddInterval(tmp);
 		}
