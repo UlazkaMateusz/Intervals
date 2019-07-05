@@ -4,38 +4,24 @@
 
 Interval::Interval() {}
 
-Interval::Interval(const DateTime* s, const DateTime* e)
+Interval::Interval(DateTime& s, DateTime& e)
 {
-	if (!s->Before(e))
+	if (!s.Before(e))
 		throw "Cannot create Interval if end is before start";
 
-	start = new DateTime(s);
-	end = new DateTime(e);
+	start = std::make_shared<DateTime>(s);
+	end = std::make_shared<DateTime>(e);
 	age = 0;
 }
 
-Interval::Interval(const Interval *i)
+DateTime& Interval::getStart() const
 {
-	start = new DateTime(i->start);
-	end = new DateTime(i->end);
-	age = 0;
+	return *start;
 }
 
-Interval::Interval(DateTime s, DateTime e)
+DateTime& Interval::getEnd() const
 {
-	start = new DateTime(s);
-	end = new DateTime(e);
-	age = 0;
-}
-
-const DateTime* Interval::getStart() const
-{
-	return start;
-}
-
-const DateTime* Interval::getEnd() const
-{
-	return end;
+	return *end;
 }
 
 int Interval::getAge() const
@@ -48,7 +34,7 @@ void Interval::IncremetAge()
 	age++;
 }
 
-bool Interval::Contains(const DateTime *i) const
+bool Interval::Contains(const DateTime &i) const
 {
 	if ((start->Before(i) || start->Exact(i))  && (end->After(i) || end->Exact(i)))
 		return true;
@@ -56,33 +42,33 @@ bool Interval::Contains(const DateTime *i) const
 	return false;
 }
 
-bool Interval::Contains(const Interval *i) const
+bool Interval::Contains(const Interval &i) const
 {
-	if (((start->Before(i->start)) || start->Exact(i->start)) && ((end->After(i->end)) || end->Exact(i->end)))
+	if (((start->Before(*(i.start))) || start->Exact(*(i.start))) && ((end->After(*(i.end))) || end->Exact(*(i.end))))
 		return true;
 
 	return false;
 }
 
-bool Interval::Overlaps(const Interval *i) const
+bool Interval::Overlaps(const Interval &i) const
 {
-	if (Contains(i->getStart()) || Contains(i->getEnd()))
+	if (Contains(i.getStart()) || Contains(i.getEnd()))
 		return true;
 	
 	return false;
 }
 
-bool Interval::StartsBefore(const Interval *i) const
+bool Interval::StartsBefore(const Interval &i) const
 {
-	if (start->Before(i->getStart()))
+	if (start->Before(i.getStart()))
 		return true;
 	else
 		return false;
 }
 
-bool Interval::EndsAfter(const Interval *i) const
+bool Interval::EndsAfter(const Interval &i) const
 {
-	if (end->After(i->getEnd()))
+	if (end->After(i.getEnd()))
 		return true;
 	else
 		return false;
@@ -90,8 +76,6 @@ bool Interval::EndsAfter(const Interval *i) const
 
 Interval::~Interval()
 {
-	delete start;
-	delete end;
 }
 
 std::ostream & operator<<(std::ostream & stream, const Interval & i)

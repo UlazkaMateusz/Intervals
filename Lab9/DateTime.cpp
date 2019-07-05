@@ -1,43 +1,45 @@
 #include "pch.h"
 #include "DateTime.h"
+#include <iostream>
 
 DateTime::DateTime() {}
 
 DateTime::DateTime(int year, int month, int day, int hour, int minute, int secound)
 {
-	date = new Date(year, month, day);
-	time = new Time(hour, minute, secound);
+	date = std::make_shared<Date>(Date(year, month, day));
+	time = std::make_shared<Time>(Time(hour, minute, secound));
 }
 
-DateTime::DateTime(const DateTime *dt)
+DateTime::DateTime(DateTime& dt)
 {
-	date = new Date(dt->date);
-	time = new Time(dt->time);
+	date = std::make_shared<Date>(*dt.date);
+	time = std::make_shared<Time>(*dt.time);
 }
 
-bool DateTime::After(const DateTime *dt) const
+
+bool DateTime::After(const DateTime &dt) const
 {
-	if (date->After(dt->date))
+	if (date->After(*(dt.date)))
 		return true;
-	else if (date->Exact(dt->date) && time->After(dt->time))
+	else if (date->Exact(*(dt.date)) && time->After(*(dt.time)))
 		return true;
 	
 	return false;
 }
 
-bool DateTime::Before(const DateTime *dt) const
+bool DateTime::Before(const DateTime &dt) const
 {
-	if (date->Before(dt->date))
+	if (date->Before(*(dt.date)))
 		return true;
-	else if (date->Exact(dt->date) && (time->Before(dt->time)))
+	else if (date->Exact(*(dt.date)) && (time->Before(*(dt.time))))
 		return true;
 	else
 		return false;
 }
 
-bool DateTime::Exact(const DateTime *dt) const
+bool DateTime::Exact(const DateTime &dt) const
 {
-	if (date->Exact(dt->date) && time->Exact(dt->time))
+	if (date->Exact(*(dt.date)) && time->Exact(*(dt.time)))
 		return true;
 	else
 		return false;
@@ -46,22 +48,8 @@ bool DateTime::Exact(const DateTime *dt) const
 
 DateTime::~DateTime()
 {
-	delete time;
-	delete date;
 }
 
-bool DateTime::operator==(const DateTime *dt) const
-{
-	if ((date == dt->date) && (time == dt->time))
-		return true;
-
-	return false;
-}
-
-bool DateTime::operator!=(const DateTime *dt) const
-{
-	return !(*this == dt);
-}
 
 std::ostream & operator<<(std::ostream & stream, const DateTime &dt)
 {

@@ -4,28 +4,26 @@
 class Interval
 {
 private:
-	DateTime* start;
-	DateTime* end;
+	std::shared_ptr<DateTime> start;
+	std::shared_ptr<DateTime> end;
 
 	int age;
 	Interval();
 public:
-	Interval(const DateTime *s, const DateTime *e);
-	Interval(const Interval *i);
-	Interval(DateTime s, DateTime e);
+	Interval(DateTime &s, DateTime &e);
 
-	const DateTime* getStart() const;
-	const DateTime* getEnd() const;
+	DateTime& getStart() const;
+	DateTime& getEnd() const;
 
 	int getAge() const;
 
 	void IncremetAge();
-	bool Contains(const DateTime *i) const;
-	bool Contains(const Interval *i) const;
+	bool Contains(const DateTime &i) const;
+	bool Contains(const Interval &i) const;
 
-	bool Overlaps(const Interval *i) const;
-	bool StartsBefore(const Interval *i) const;
-	bool EndsAfter(const Interval *i) const;
+	bool Overlaps(const Interval &i) const;
+	bool StartsBefore(const Interval &i) const;
+	bool EndsAfter(const Interval &i) const;
 
 	~Interval();
 

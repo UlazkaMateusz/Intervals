@@ -23,7 +23,7 @@ int main()
 
 
 		// Some readings from string
-		std::string inter[] = { "2014.2.6 7:17 : 51 - 2025.9.21 4 : 58 : 14" ,
+		std::string inter[] = { "2014.2.6 7:17:51 - 2025.9.21 4:58:14" ,
 								"2012.12.28 10:44:4 - 2013.12.23 7:15:43" ,
 								"2020.3.18 23:25:43 - 2034.3.28 23:19:49" ,
 								"2015.6.6 1:0:5 - 2029.7.7 17:32:45" ,
@@ -35,17 +35,17 @@ int main()
 		for (int i = 0; i < 8; i++)
 		{
 			std::cout << "Type Interval to read: " + inter[i] + "\n";
-			manager->LoadFromString(&inter[i]);
+			manager->LoadFromString(inter[i]);
 		}
 
 
-		/*while (true)
+		while (true)
 		{
 			std::cout << "Type Interval to read: ";
 			std::getline(std::cin, interval);
 			manager->LoadFromString(interval);
 			std::cout << std::endl;
-		}*/
+		}
 	}
 	catch (std::string &error)
 	{

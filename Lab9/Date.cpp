@@ -1,15 +1,9 @@
 #include "pch.h"
 #include "Date.h"
 #include <sstream>
+#include <iostream>
 
 Date::Date() {}
-
-Date::Date(const Date * d)
-{
-	year = d->year;
-	month = d->month;
-	day = d->day;
-}
 
 
 Date::Date(int year, int month, int day)
@@ -29,45 +23,45 @@ Date::Date(int year, int month, int day)
 	}
 }
 
-bool Date::After(const Date *d) const
+bool Date::After(const Date &d) const
 {
-	if (year > d->year)
+	if (year > d.year)
 		return true;
-	else if (year < d->year)
+	else if (year < d.year)
 		return false;
 
-	if (month > d->month)
+	if (month > d.month)
 		return true;
-	else if (month < d->month)
+	else if (month < d.month)
 		return false;
 
-	if (day > d->day)
+	if (day > d.day)
 		return true;
 	else
 		return false;
 }
 
-bool Date::Before(const Date *d) const
+bool Date::Before(const Date &d) const
 {
-	if (year < d->year)
+	if (year < d.year)
 		return true;
-	else if (year > d->year)
+	else if (year > d.year)
 		return false;
 
-	if (month < d->month)
+	if (month < d.month)
 		return true;
-	else if (month > d->month)
+	else if (month > d.month)
 		return false;
 
-	if (day < d->day)
+	if (day < d.day)
 		return true;
 	else
 		return false;
 }
 
-bool Date::Exact(const Date *d) const
+bool Date::Exact(const Date &d) const
 {
-	if (year == d->year && month == d->month && day == d->day)
+	if (year == d.year && month == d.month && day == d.day)
 		return true;
 	return false;
 }
@@ -77,13 +71,6 @@ Date::~Date()
 {
 }
 
-bool Date::operator==(const Date* d) const
-{
-	if ((year == d->year) && (month == d->month) && (day == d->day))
-		return true;
-
-	return false;
-}
 
 std::ostream & operator<<(std::ostream & stream, const Date & d)
 {
